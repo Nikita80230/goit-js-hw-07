@@ -6,7 +6,7 @@ const galleryMarkup = createGalleryItemCard(galleryItems);
 
 galleryRef.insertAdjacentHTML("beforeend", galleryMarkup);
 
-galleryRef.addEventListener("click", showLargeImg)
+galleryRef.addEventListener("click", showLargeImg);
 
 
 function createGalleryItemCard(galleryItem) {
@@ -51,8 +51,6 @@ function showLargeImg(event) {
     })
 
     instance.show()
-
-    console.log(event.target)
 }
 
 console.log(galleryItems);
