@@ -1,39 +1,38 @@
 import { galleryItems } from './gallery-items.js';
-// Change code below this line
 
-const galleryRef = document.querySelector('.gallery');
-const galleryMarkup = createGalleryItemCard(galleryItems);
-galleryRef.insertAdjacentHTML("beforeend", galleryMarkup);
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-galleryRef.addEventListener("click", showLargeImg)
+const gallery = document.querySelector(".gallery");
+gallery.addEventListener("click", getLargeImage);
 
-function createGalleryItemCard(galleryItem) {
-    return galleryItems.map(({preview, original, description}) => 
-    `
-    <div class="gallery__item">
-        <a class="gallery__link" href="${original}">
-            <img
-            class="gallery__image"
-            src="${preview}"
-            data-source="${original}"
-            alt="${description}"
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+const markup = galleryItems.forEach(({preview, original, description}) => {
+    const markup = `
+    <a 
+        class="gallery__item" 
+        href=${original}>
+            <img 
+                class="gallery__image" 
+                src=${preview} 
+                alt=${description}
             />
-        </a>
-    </div>
-    `).join("")
-};
+  </a>`
+    gallery.insertAdjacentHTML("beforeend", markup)
+})
 
-function showLargeImg(event) {
-    
-    if (!event.target.classList.contains("gallery__image")) {
-        return;
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+function getLargeImage(event) {
+    event.preventDefault();
+
+    if(event.target.nodeName === "IMG") {
+        var lightbox = new SimpleLightbox('.gallery a', 
+        {     
+            captionsData: "alt",
+            captionsDelay: "250ms"
+        });
     }
 
-    event.preventDefault()
-};
-const lightBox = new SimpleLightbox('.gallery a', {
-    captionsData: "alt",
-    captionsDelay: "250ms"
- })
-
-console.log(galleryItems);
+}

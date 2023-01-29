@@ -1,56 +1,45 @@
 import { galleryItems } from './gallery-items.js';
-// Change code below this line
 
-const galleryRef = document.querySelector('.gallery');
-const galleryMarkup = createGalleryItemCard(galleryItems);
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-galleryRef.insertAdjacentHTML("beforeend", galleryMarkup);
+const gallery = document.querySelector(".gallery");
+gallery.addEventListener("click", getLargeImage);
 
-galleryRef.addEventListener("click", showLargeImg);
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+galleryItems.forEach(({preview, original, description}) => {
+    const markup = `<div class="gallery__item">
+    <a class="gallery__link" href=${original}>
+    <img
+        class="gallery__image"
+        src=${preview}
+        data-source=${original}
+        alt=${description}
+    />
+    </a>
+    </div>`
+    gallery.insertAdjacentHTML("beforeend", markup)
+})
 
-function createGalleryItemCard(galleryItem) {
-    return galleryItems.map(({preview, original, description}) => 
-    `
-    <div class="gallery__item">
-        <a class="gallery__link" href="${original}">
-            <img
-            class="gallery__image"
-            src="${preview}"
-            data-source="${original}"
-            alt="${description}"
-            />
-        </a>
-    </div>
-    `).join("")
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-    
-};
+function getLargeImage(event) {
+    event.preventDefault();
 
-function showLargeImg(event) {
-    
-    if (!event.target.classList.contains("gallery__image")) {
-        return;
-    }
-
-    event.preventDefault()
-
-    function onCloseByKeybord(event) {
-        if (event.code === "Escape") {
-            instance.close()
-        }
-     }
+    const largeImageLink = event.target.getAttribute('data-source')
 
     const instance = basicLightbox.create(`
-        <img src="${event.target.dataset.source}" 
-            alt ="${event.target.alt}">
-    `,
-        {
-            onShow: () => { addEventListener("keydown", onCloseByKeybord) },
-            onClose: () => {addEventListener("keydown", onCloseByKeybord) }
-    })
+        <img src="${largeImageLink}" width="1200" height="800">
+    `)
 
-    instance.show()
+    if(event.target.nodeName === "IMG") {
+        instance.show()
+    }
+
+    addEventListener("keydown", event => {
+        if(event.code === "Escape") {
+            instance.close()
+        }
+    });
 }
 
-console.log(galleryItems);
